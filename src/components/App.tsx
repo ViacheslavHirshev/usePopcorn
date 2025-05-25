@@ -1,8 +1,9 @@
 import { useState } from "react";
 import NavBar from "./NavBar";
-import ListBox from "./ListBox";
-import WatchedBox from "./WatchedBox";
 import { Movie } from "../types";
+import { WatchedMovie } from "../types";
+import { Movies, Summary, WatchedMovies, } from "./MovieInfo";
+import Box from "./Box";
 
 const tempMovieData: Movie[] = [
   {
@@ -28,6 +29,29 @@ const tempMovieData: Movie[] = [
   },
 ];
 
+const tempWatchedData: WatchedMovie[] = [
+  {
+    imdbID: "tt1375666",
+    title: "Inception",
+    year: "2010",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+    runtime: 148,
+    imdbRating: 8.8,
+    userRating: 10,
+  },
+  {
+    imdbID: "tt0088763",
+    title: "Back to the Future",
+    year: "1985",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+    runtime: 116,
+    imdbRating: 8.5,
+    userRating: 9,
+  },
+];
+
 export default function App()
 {
   const [movies, setMovies] = useState(tempMovieData);
@@ -35,18 +59,25 @@ export default function App()
   return (
     <>
       <NavBar movies={movies} />
-      <Main movies={movies} />
+      <Main>
+        <Box>
+          <Movies movies={movies} />
+        </Box>
+
+        <Box>
+          <Summary watched={tempWatchedData} />
+          <WatchedMovies watched={tempWatchedData} />
+        </Box>
+      </Main>
     </>
   );
 }
 
-function Main({ movies }: { movies: Movie[] })
+function Main({ children }: { children: React.ReactNode })
 {
-
   return (
     <main className="main">
-      <ListBox movies={movies} />
-      <WatchedBox />
+      {children}
     </main>
   );
 }
