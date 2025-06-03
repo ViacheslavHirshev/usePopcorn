@@ -16,12 +16,12 @@ function SingleMovie({ movie }: { movie: Movie })
 {
     return (
         <li>
-            <img src={movie.poster} alt={`${movie.title} poster`} />
-            <h3>{movie.title}</h3>
+            <img src={movie.Poster} alt={`${movie.Title} poster`} />
+            <h3>{movie.Title}</h3>
             <div>
                 <p>
                     <span>🗓</span>
-                    <span>{movie.year}</span>
+                    <span>{movie.Year}</span>
                 </p>
             </div>
         </li>
@@ -73,8 +73,8 @@ function SingleWatchedMovie({ watchedMovie }: { watchedMovie: WatchedMovie })
 {
     return (
         <li key={watchedMovie.imdbID}>
-            <img src={watchedMovie.poster} alt={`${watchedMovie.title} poster`} />
-            <h3>{watchedMovie.title}</h3>
+            <img src={watchedMovie.Poster} alt={`${watchedMovie.Title} poster`} />
+            <h3>{watchedMovie.Title}</h3>
             <div>
                 <p>
                     <span>⭐️</span>
