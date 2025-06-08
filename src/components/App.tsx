@@ -14,7 +14,7 @@ export default function App()
   const [watched, setWatched] = useState<IWatchedMovie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("inception");
+  const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>("");
 
   function selectMovie(id: string)
@@ -44,7 +44,7 @@ export default function App()
       try
       {
         setIsLoading(true);
-        const data = await getDataFromApi<IOMDBJsonData>(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
+        const data = await getDataFromApi<IOMDBJsonData>(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
 
         if (data.Response === "False")
           throw new Error("Movie not found");

@@ -44,7 +44,7 @@ export default function MovieDetails({ id, onCloseMovie, onAddWatched, watched }
         const getMovieDetails = async function ()
         {
             setIsLoading(true);
-            const data = await getDataFromApi<IMovieDetails>(`http://www.omdbapi.com/?apikey=b49353cd&i=${id}`);
+            const data = await getDataFromApi<IMovieDetails>(`https://www.omdbapi.com/?apikey=b49353cd&i=${id}`);
             setMovieInfo(data);
             setIsLoading(false);
         }
