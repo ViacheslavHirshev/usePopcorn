@@ -1,21 +1,21 @@
-import { Movie, WatchedMovie } from "../types";
+import { IMovie, IWatchedMovie } from "../types";
 import { average } from "../utils";
 
-export function Movies({ movies }: { movies: Movie[] })
+export function Movies({ movies, onSelectMovie }: { movies: IMovie[], onSelectMovie: (id: string) => void })
 {
     return (
-        <ul className="list">
+        <ul className="list list-movies">
             {movies?.map((movie) => (
-                <SingleMovie key={movie.imdbID} movie={movie} />
+                <SingleMovie key={movie.imdbID} movie={movie} onSelectMovie={onSelectMovie} />
             ))}
         </ul>
-    )
+    );
 }
 
-function SingleMovie({ movie }: { movie: Movie })
+function SingleMovie({ movie, onSelectMovie }: { movie: IMovie, onSelectMovie: (id: string) => void })
 {
     return (
-        <li>
+        <li onClick={() => onSelectMovie(movie.imdbID)}>
             <img src={movie.Poster} alt={`${movie.Title} poster`} />
             <h3>{movie.Title}</h3>
             <div>
@@ -25,14 +25,14 @@ function SingleMovie({ movie }: { movie: Movie })
                 </p>
             </div>
         </li>
-    )
+    );
 }
 
-export function Summary({ watched }: { watched: WatchedMovie[] })
+export function Summary({ watched }: { watched: IWatchedMovie[] })
 {
     const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
     const avgUserRating = average(watched.map((movie) => movie.userRating));
-    const avgRuntime = average(watched.map((movie) => movie.runtime));
+    // const avgRuntime = average(watched.map((movie) => movie.runtime));
 
     return (
         <div className="summary">
@@ -44,32 +44,32 @@ export function Summary({ watched }: { watched: WatchedMovie[] })
                 </p>
                 <p>
                     <span>⭐️</span>
-                    <span>{avgImdbRating}</span>
+                    <span>{avgImdbRating.toFixed(2)}</span>
                 </p>
                 <p>
                     <span>🌟</span>
-                    <span>{avgUserRating}</span>
+                    <span>{avgUserRating.toFixed(2)}</span>
                 </p>
-                <p>
+                {/* <p>
                     <span>⏳</span>
-                    <span>{avgRuntime} min</span>
-                </p>
+                    <span>{avgRuntime.toFixed(2)} min</span>
+                </p> */}
             </div>
         </div>
     );
 }
 
-export function WatchedMovies({ watched }: { watched: WatchedMovie[] })
+export function WatchedMovies({ watched, onWatchedMovieDelete }: { watched: IWatchedMovie[], onWatchedMovieDelete: (id: string) => void })
 {
     return (
         <ul className="list">
             {watched.map((movie) =>
-                <SingleWatchedMovie watchedMovie={movie} />)}
+                <SingleWatchedMovie key={movie.imdbID} watchedMovie={movie} onWatchedMovieDelete={onWatchedMovieDelete} />)}
         </ul>
-    )
+    );
 }
 
-function SingleWatchedMovie({ watchedMovie }: { watchedMovie: WatchedMovie })
+function SingleWatchedMovie({ watchedMovie, onWatchedMovieDelete }: { watchedMovie: IWatchedMovie, onWatchedMovieDelete: (id: string) => void })
 {
     return (
         <li key={watchedMovie.imdbID}>
@@ -89,6 +89,7 @@ function SingleWatchedMovie({ watchedMovie }: { watchedMovie: WatchedMovie })
                     <span>{watchedMovie.runtime} min</span>
                 </p>
             </div>
+            <button className="btn-delete" onClick={() => onWatchedMovieDelete(watchedMovie.imdbID)}>X</button>
         </li>
-    )
+    );
 }
