@@ -52,6 +52,36 @@ export default function MovieDetails({ id, onCloseMovie, onAddWatched, watched }
         getMovieDetails();
     }, [id]);
 
+    useEffect(() =>
+    {
+        if (!movieInfo?.Title)
+            return;
+
+        document.title = `Movie | ${movieInfo.Title}`;
+
+        return () =>
+        {
+            document.title = "usePopcorn";
+        }
+    }, [movieInfo?.Title]);
+
+    useEffect(() => {
+        function callback(e: KeyboardEvent)
+        {
+            if (e.code === "Escape")
+            {
+                onCloseMovie();
+            }
+        }
+
+        document.addEventListener("keydown", callback)
+
+        return () =>
+        {
+            document.removeEventListener("keydown", callback);
+        }
+    }, [onCloseMovie]);
+
     return (
         <div className="details">
             <button className="btn-back" onClick={onCloseMovie}>&larr;</button>

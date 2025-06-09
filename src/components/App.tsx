@@ -39,12 +39,14 @@ export default function App()
 
   useEffect(() =>
   {
+    const abortController = new AbortController();
+
     const getMovies = async function () 
     {
       try
       {
         setIsLoading(true);
-        const data = await getDataFromApi<IOMDBJsonData>(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
+        const data = await getDataFromApi<IOMDBJsonData>(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`, { signal: abortController.signal });
 
         if (data.Response === "False")
           throw new Error("Movie not found");
@@ -54,13 +56,13 @@ export default function App()
       }
       catch (err)
       {
-        if (err instanceof Error)
+        if (err instanceof Error && err.name !== "AbortError")
         {
           setError(err.message);
         }
         else
         {
-          console.log("Unknown error: " + err);
+          // console.log("Unknown error: " + err);
         }
       }
       finally 
@@ -78,6 +80,11 @@ export default function App()
     }
 
     getMovies();
+
+    return () =>
+    {
+      abortController.abort();
+    };
   }, [query]);
 
   return (
